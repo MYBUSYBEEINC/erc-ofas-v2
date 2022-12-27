@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AnAccount" xml:space="preserve">
+    <value>一个户口</value>
+  </data>
+  <data name="AsManyAsYouWant" xml:space="preserve">
+    <value>复制代码重复使用</value>
+  </data>
+  <data name="AsManyAsYouWantDescription" xml:space="preserve">
+    <value>轻松复制这个项目，你就立刻拥有一些重要的功能，如用户管理、权限管理、登录历史等等。</value>
+  </data>
+  <data name="ASPNETMVCWebApplication" xml:space="preserve">
+    <value>ASP.NET MVC C# Web 程序</value>
+  </data>
+  <data name="Benefits" xml:space="preserve">
+    <value>好处</value>
+  </data>
+  <data name="BootstrapHTMLWebsiteTemplates" xml:space="preserve">
+    <value>Bootstrap HTML 网页模板</value>
+  </data>
+  <data name="Confirmpassword" xml:space="preserve">
+    <value>确认密码</value>
+  </data>
+  <data name="CRUDUsers" xml:space="preserve">
+    <value>CRUD 用户</value>
+  </data>
+  <data name="DetailedDocumentation" xml:space="preserve">
+    <value>详细文档</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>电邮</value>
+  </data>
+  <data name="EmailAddress" xml:space="preserve">
+    <value>电子邮件</value>
+  </data>
+  <data name="EnvatoPortfolio" xml:space="preserve">
+    <value>我们在Envato的产品</value>
+  </data>
+  <data name="FAQ" xml:space="preserve">
+    <value>常见问题</value>
+  </data>
+  <data name="FAQFourAnswer" xml:space="preserve">
+    <value>是的，它在我们的计划中，但目前我们无法保证发布时间。</value>
+  </data>
+  <data name="FAQFourQuestion" xml:space="preserve">
+    <value>您可以创建 .NET Core MVC 版本吗？</value>
+  </data>
+  <data name="FAQOneAnswer" xml:space="preserve">
+    <value>我们仅提供对修复模板中现有错误和回答有关现有功能的问题的支持。有关如何进行自定义修改、如何在您自己修改后解决错误以及直接安装的分步指导不在我们的支持范围内。非常感谢你的理解。我们将花时间为您创建更多精彩的模板。</value>
+  </data>
+  <data name="FAQOneQuestion" xml:space="preserve">
+    <value>客服政策是如何操作的？</value>
+  </data>
+  <data name="FAQThreeAnswer" xml:space="preserve">
+    <value>可以，没问题。到“/Views/Shared/_FooterBeforeLogin.cshtml”并找到页脚部分以编辑或删除版权文字。</value>
+  </data>
+  <data name="FAQThreeQuestion" xml:space="preserve">
+    <value>我可以编辑或删除页脚的版权文本吗？</value>
+  </data>
+  <data name="FAQTwoAnswerPartOne" xml:space="preserve">
+    <value>答案是：购买后立即。你可以阅读</value>
+  </data>
+  <data name="FAQTwoAnswerPartTwo" xml:space="preserve">
+    <value>以了解更多详细信息，请参阅文末尾的“下载您的项目”部分。</value>
+  </data>
+  <data name="FAQTwoQuestion" xml:space="preserve">
+    <value>购买商品后什么时候可以下载文件？</value>
+  </data>
+  <data name="Features" xml:space="preserve">
+    <value>功能</value>
+  </data>
+  <data name="FeaturesDescription" xml:space="preserve">
+    <value>开始一个ASP.NET MVC Web 系统项目所需的全部基本功能</value>
+  </data>
+  <data name="Fillyourdetailstoregister" xml:space="preserve">
+    <value>填写您的信息以进行注册。</value>
+  </data>
+  <data name="Fillyourusernameandpasswordtosignin" xml:space="preserve">
+    <value>输入您的用户名与密码以登录</value>
+  </data>
+  <data name="FollowUs" xml:space="preserve">
+    <value>追踪我们</value>
+  </data>
+  <data name="FollowUsDescription" xml:space="preserve">
+    <value>关注我们的社交媒体以获取有关最新项目的更新或消息。</value>
+  </data>
+  <data name="FooterCopyright" xml:space="preserve">
+    <value>版权所有 2022 AuraTheme。 版权所有。</value>
+  </data>
+  <data name="Forgotyourpassword" xml:space="preserve">
+    <value>忘记密码？</value>
+  </data>
+  <data name="FrequentlyAskedQuestions" xml:space="preserve">
+    <value>经常被问到的问题</value>
+  </data>
+  <data name="FullSourceCode" xml:space="preserve">
+    <value>完整源代码</value>
+  </data>
+  <data name="FullyResponsive" xml:space="preserve">
+    <value>可兼容不同的屏幕尺寸</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>主页</value>
+  </data>
+  <data name="HomeDescription" xml:space="preserve">
+    <value>这是一个带有 .NET Framework 的 ASP.NET MVC C# Web 应用程序。它有助于通过一些基本模块启动您的项目</value>
+  </data>
+  <data name="HomeIndexTabTitle" xml:space="preserve">
+    <value>NetStarter- ASP.NET MVC C# Web 程序模板</value>
+  </data>
+  <data name="HomeTitleOne" xml:space="preserve">
+    <value>使用</value>
+  </data>
+  <data name="HomeTitleTwo" xml:space="preserve">
+    <value>轻松开始你的.net项目</value>
+  </data>
+  <data name="ImportAndExport" xml:space="preserve">
+    <value>进口 &amp; 出口</value>
+  </data>
+  <data name="IncludeHomePage" xml:space="preserve">
+    <value>包括标准的主页设计</value>
+  </data>
+  <data name="IncludeHomePageDescription" xml:space="preserve">
+    <value>您不止可以得到一个管理版面，还可以得到一个跟现在这个主页一模一样的标准主页设计。</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>登录</value>
+  </data>
+  <data name="NetStarterFAQArticles" xml:space="preserve">
+    <value>NetStarter 常见问题解答文章</value>
+  </data>
+  <data name="OurProducts" xml:space="preserve">
+    <value>我们的产品</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="RegisterAndLogin" xml:space="preserve">
+    <value>注册 &amp; 登录</value>
+  </data>
+  <data name="Rememberme" xml:space="preserve">
+    <value>记住我？</value>
+  </data>
+  <data name="RolePermission" xml:space="preserve">
+    <value>权限设置</value>
+  </data>
+  <data name="SaveYourTime" xml:space="preserve">
+    <value>节省您的时间</value>
+  </data>
+  <data name="SaveYourTimeDescription" xml:space="preserve">
+    <value>时间是金钱。NetStarter可以让你加速完成您的.NET项目编码，大大的节省了重复写同样的代码的时间。</value>
+  </data>
+  <data name="SendingEmail" xml:space="preserve">
+    <value>发送邮件</value>
+  </data>
+  <data name="SignUp" xml:space="preserve">
+    <value>注册</value>
+  </data>
+  <data name="Specifications" xml:space="preserve">
+    <value>规格</value>
+  </data>
+  <data name="SpecificationsDescription" xml:space="preserve">
+    <value>使用最新的稳定框架开发</value>
+  </data>
+  <data name="StandardAdminPanel" xml:space="preserve">
+    <value>标准的Admin模板</value>
+  </data>
+  <data name="StandardHomePage" xml:space="preserve">
+    <value>标准主页设计</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>提交</value>
+  </data>
+  <data name="Supportfromdeveloper" xml:space="preserve">
+    <value>程序员的客服服务（含服务政策）</value>
+  </data>
+  <data name="TheFollowingArticle" xml:space="preserve">
+    <value>这篇文章</value>
+  </data>
+  <data name="ToNetStarter" xml:space="preserve">
+    <value>进NetStarter</value>
+  </data>
+  <data name="UploadFile" xml:space="preserve">
+    <value>上传文件</value>
+  </data>
+  <data name="UsefulLinks" xml:space="preserve">
+    <value>相关资源</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>用户名</value>
+  </data>
+  <data name="VariousCharts" xml:space="preserve">
+    <value>多种图表</value>
+  </data>
+  <data name="VariousFormControls" xml:space="preserve">
+    <value>多种表单控件</value>
+  </data>
+  <data name="ViewMore" xml:space="preserve">
+    <value>查看更多</value>
+  </data>
+  <data name="WebAppTitle" xml:space="preserve">
+    <value>NetStarter</value>
+  </data>
+  <data name="Whatyouget" xml:space="preserve">
+    <value>您可以得到什么</value>
+  </data>
+  <data name="WhatyougetDescription" xml:space="preserve">
+    <value>购买后，您将获得一个 Zip 文件，其中包含以下的内容</value>
+  </data>
+  <data name="WhyNetStarter" xml:space="preserve">
+    <value>为什么使用NetStarter</value>
+  </data>
+  <data name="WhyNetStarterLargeTitle" xml:space="preserve">
+    <value>拥有用户管理、角色权限设定等功能来启动您的项目</value>
+  </data>
+</root>

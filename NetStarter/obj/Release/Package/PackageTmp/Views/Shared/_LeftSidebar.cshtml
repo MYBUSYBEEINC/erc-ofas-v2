@@ -1,0 +1,320 @@
+﻿@using NetStarter.Models;
+@using NetStarter.Resources
+
+<!-- Call once, used in entire LeftSidebar.cshtml -->
+@{
+    CurrentUserPermission dashboardPermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.Dashboard.ToString());
+    CurrentUserPermission preFiledCasePermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.PreFiledCase.ToString());
+    CurrentUserPermission filedCasePermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.FiledCase.ToString());
+    CurrentUserPermission hearingPermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.Hearing.ToString());
+    CurrentUserPermission initiatoryPleadingPermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.InitiatoryPleading.ToString());
+    CurrentUserPermission pleadingCaseNumberPermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.PleadingWithCaseNumber.ToString());
+    CurrentUserPermission otherCorrespondensePermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.OtherLetterCorrespondense.ToString());
+    CurrentUserPermission disputeResolutionPermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.DisputeResolution.ToString());
+    CurrentUserPermission transactionPermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.Transaction.ToString());
+    CurrentUserPermission paymentPermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.Payment.ToString());
+    CurrentUserPermission userStatusPermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.UserStatus.ToString());
+    CurrentUserPermission userTypePermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.UserType.ToString());
+    CurrentUserPermission caseTypePermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.CaseType.ToString());
+    CurrentUserPermission caseNaturePermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.CaseNature.ToString());
+    CurrentUserPermission userAttachmentTypePermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.UserAttachmentType.ToString());
+    CurrentUserPermission roleManagementPermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.RoleManagement.ToString());
+    CurrentUserPermission userManagementPermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.UserManagement.ToString());
+    CurrentUserPermission loginHistoryPermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.LoginHistory.ToString());
+    CurrentUserPermission stakeholderPermission = User.Identity.IsAllowed(ProjectEnum.ModuleCode.StakeholderRegistration.ToString());
+}
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar-default" class="sidebar d-none d-md-block" tabindex="-1">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        @if (dashboardPermission.ViewRight == true)
+        {
+            <li class="nav-item mt-3">
+                <a class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "dashboard" && ViewContext.RouteData.Values["Action"].ToString().ToLower() == "index" ? "active" : "")" href="@Url.Action("index","dashboard")">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>@Resource.Dashboard</span>
+                </a>
+            </li>
+        }
+        @if (preFiledCasePermission.ViewRight == true || filedCasePermission.ViewRight == true || hearingPermission.ViewRight == true || initiatoryPleadingPermission.ViewRight == true ||
+            pleadingCaseNumberPermission.ViewRight == true || otherCorrespondensePermission.ViewRight == true || disputeResolutionPermission.ViewRight == true)
+        {
+            <li class="nav-item">
+                <a class="nav-link collapsed @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "evossexternal" ? "" : "")" data-bs-target="#components-nav1" data-bs-toggle="collapse" href="#">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>@Resource.NonEVOSSExternal</span>
+                    <i class="fa-solid fa-caret-down ms-auto"></i>
+                </a>
+                <ul id="components-nav1" class="nav-content collapse @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "evossexternal" ? "show" : "")" data-bs-parent="#sidebar-nav">
+                    @if (preFiledCasePermission.ViewRight == true)
+                    {
+                        <li>
+                            <a href="@Url.Action("index","prefiledcase")" class="@(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "prefiledcase" ? "active" : "")">
+                                <i class="fa-solid fa-gavel "></i>
+                                <span>@Resource.PreFiledCases</span>
+                            </a>
+                        </li>
+                    }
+                    @if (filedCasePermission.ViewRight == true)
+                    {
+                        <li>
+                            <a href="@Url.Action("index","filedcase")" class="@(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "filedcase" ? "active" : "")">
+                                <i class="fa-solid fa-address-card"></i>
+                                <span>@Resource.FiledCases</span>
+                            </a>
+                        </li>
+                    }
+                    @if (hearingPermission.ViewRight == true)
+                    {
+                        <li>
+                            <a href="@Url.Action("hearinglist","hearing")" class="@(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "hearing" ? "active" : "")">
+                                <i class="fa-solid fa-ear-deaf"></i>
+                                <span>@Resource.Hearings</span>
+                            </a>
+                        </li>
+                    }
+                    @if (initiatoryPleadingPermission.ViewRight == true)
+                    {
+                        <li>
+                            <a href="@Url.Action("index","initiatorypleading")" class="@(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "initiatorypleading" ? "active" : "")">
+                                <i class="fa-solid fa-shield"></i>
+                                <span>@Resource.InitiatoryPleadings</span>
+                            </a>
+                        </li>
+                    }
+                    @if (pleadingCaseNumberPermission.ViewRight == true)
+                    {
+                        <li>
+                            <a href="@Url.Action("index","pleadingswithcasenumber")" class="@(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "pleadingswithcasenumber" ? "active" : "")">
+                                <i class="fa-solid fa-list-numeric"></i>
+                                <span>@Resource.PleadingsWithCaseNumbers</span>
+                            </a>
+                        </li>
+                    }
+                    @if (otherCorrespondensePermission.ViewRight == true)
+                    {
+                        <li>
+                            <a href="@Url.Action("index","otherlettercorrespondence")" class="@(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "otherlettercorrespondence" ? "active" : "")">
+                                <i class="fa-solid fa-book"></i>
+                                <span>@Resource.OtherLettersCorrespondences</span>
+                            </a>
+                        </li>
+                    }
+                    @if (disputeResolutionPermission.ViewRight == true)
+                    {
+                        <li>
+                            <a href="@Url.Action("index","disputeresolution")" class="@(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "disputeresolution" ? "active" : "")">
+                                <i class="fa-solid fa-hand"></i>
+                                <span>@Resource.DisputeResolution</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </li>
+        }
+        @if (transactionPermission.ViewRight == true)
+        {
+            <li class="nav-item">
+                <a class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "transaction" ? "active" : "")" href="@Url.Action("index","transaction")">
+                    <i class="fa-solid fa-desktop"></i>
+                    <span>@Resource.Transactions</span>
+                </a>
+            </li>
+        }
+        @if (paymentPermission.ViewRight == true)
+        {
+            <li class="nav-item">
+                <a class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "payment" ? "active" : "")" href="@Url.Action("index","payment")">
+                    <i class="fa-solid fa-money-bills"></i>
+                    <span>@Resource.Payment</span>
+                </a>
+            </li>
+        }
+        @if (userStatusPermission.ViewRight == true || userTypePermission.ViewRight == true || userAttachmentTypePermission.ViewRight == true)
+        {
+            <li class="nav-item">
+                <a class="nav-link collapsed @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "systemrole" ? "active" : "")" data-bs-target="#components-nav2" data-bs-toggle="collapse" href="#">
+                    <i class="fa-solid fa-gear"></i><span>@Resource.GeneralSettings</span><i class="fa-solid fa-caret-down ms-auto"></i>
+                </a>
+                <ul id="components-nav2" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    @if (userStatusPermission.ViewRight == true)
+                    {
+                        <li>
+                            <a href="@Url.Action("index","userstatus")" class="@(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "userstatus" ? "active" : "")">
+                                <i class="fa-solid fa-hand-dots"></i>
+                                <span>@Resource.UserStatus</span>
+                            </a>
+                        </li>
+                    }
+                    @if (userTypePermission.ViewRight == true)
+                    {
+                        <li>
+                            <a href="@Url.Action("index","usertype")" class="@(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "usertype" ? "active" : "")">
+                                <i class="fa-solid fa-window-restore"></i>
+                                <span>@Resource.UserTypes</span>
+                            </a>
+                        </li>
+                    }
+                    @if (caseTypePermission.ViewRight == true)
+                    {
+                        <li>
+                            <a href="@Url.Action("index","casetype")" class="@(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "casetype" ? "active" : "")">
+                                <i class="fa-solid fa-object-group"></i>
+                                <span>@Resource.CaseTypes</span>
+                            </a>
+                        </li>
+                    }
+                    @if (caseNaturePermission.ViewRight == true)
+                    {
+                        <li>
+                            <a href="@Url.Action("index","casenature")" class="@(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "casenature" ? "active" : "")">
+                                <i class="fa-solid fa-object-ungroup"></i>
+                                <span>@Resource.CaseNatures</span>
+                            </a>
+                        </li>
+                    }
+                    @if (userAttachmentTypePermission.ViewRight == true)
+                    {
+                        <li>
+                            <a href="@Url.Action("index","userattachmenttype")" class="@(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "userattachmenttype" ? "active" : "")">
+                                <i class="fa-solid fa-file"></i>
+                                <span>@Resource.UserAttachmentType</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </li>
+        }
+        @if (roleManagementPermission.ViewRight == true)
+        {
+            <li class="nav-item">
+                <a class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "role" ? "active" : "")" href="@Url.Action("index","role")">
+                    <i class="fa-solid fa-users"></i> <span>@Resource.RoleManagement</span>
+                </a>
+            </li>
+        }
+        @if (userManagementPermission.ViewRight == true)
+        {
+            <li class="nav-item">
+                <a class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "user" || ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "userattachment" ? "active" : "")" href="@Url.Action("index","user")">
+                    <i class="fa-solid fa-user-plus"></i> <span>@Resource.UserManagement</span>
+                </a>
+            </li>
+        }
+        @if (loginHistoryPermission.ViewRight == true)
+        {
+            <li class="nav-item">
+                <a class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "loginhistory" ? "active" : "")" href="@Url.Action("index","loginhistory")">
+                    <i class="fa-solid fa-clock-rotate-left"></i> <span>@Resource.LoginHistory</span>
+                </a>
+            </li>
+        }
+    </ul>
+</aside>
+
+<!-- ======= 'Only icon' sidebar ======= -->
+<aside id="sidebar-onlyicon" class="sidebar onlyicon d-none d-sm-block d-md-none">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        @if (dashboardPermission.ViewRight == true)
+        {
+            <li class="nav-item mt-3"><a class="nav-link justify-content-center" href="index.html" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard"><i class="fa-solid fa-chart-pie"></i></a></li>
+        }
+        @if (userStatusPermission.ViewRight == true || userAttachmentTypePermission.ViewRight == true)
+        {
+            <!-- Drop Down Example -->
+            <li class="nav-item">
+                <a class="nav-link justify-content-center collapsed @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "systemrole" ? "active" : "")" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                    <i class="fa-solid fa-gear"></i><i class="fa-solid fa-caret-down ms-auto"></i>
+                </a>
+                <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    @if (userStatusPermission.ViewRight == true)
+                    {
+                        <li><a href="@Url.Action("index","userstatus")" class="py-3 nav-child @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "userstatus" ? "active" : "")" data-bs-toggle="tooltip" data-bs-placement="right" title="User Status"><i class="fa-solid fa-user-tag"></i></a></li>
+                    }
+                    @if (userAttachmentTypePermission.ViewRight == true)
+                    {
+                        <li><a href="@Url.Action("index","userattachmenttype")" class="py-3 nav-child @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "userattachmenttype" ? "active" : "")" data-bs-toggle="tooltip" data-bs-placement="right" title="User Attachment Type"><i class="fa-solid fa-circle-chevron-down"></i></a></li>
+                    }
+                </ul>
+            </li>
+        }
+        @if (roleManagementPermission.ViewRight == true)
+        {
+            <li class="nav-item">
+                <a class="nav-link justify-content-center collapsed @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "role" ? "active" : "")" href="@Url.Action("index","role")" data-bs-toggle="tooltip" data-bs-placement="right" title="Role Management">
+                    <i class="fa-solid fa-users"></i>
+                </a>
+            </li>
+        }
+        @if (userManagementPermission.ViewRight == true)
+        {
+            <li class="nav-item">
+                <a class="nav-link justify-content-center collapsed @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "user" || ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "userattachment" ? "active" : "")" href="@Url.Action("index","user")" data-bs-toggle="tooltip" data-bs-placement="right" title="User Management">
+                    <i class="fa-solid fa-user-plus"></i>
+                </a>
+            </li>
+        }
+        @if (loginHistoryPermission.ViewRight == true)
+        {
+            <li class="nav-item">
+                <a class="nav-link justify-content-center collapsed @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "loginhistory" ? "active" : "")" href="@Url.Action("index","loginhistory")" data-bs-toggle="tooltip" data-bs-placement="right" title="Login History">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                </a>
+            </li>
+        }
+    </ul>
+</aside>
+
+<!-- ======= offcanvas Sidebar for Mobile phone device ======= -->
+<aside id="offcanvas" class="offcanvas offcanvas-start" tabindex="-1">
+    <div class="brandname ps-3">@Resource.NetStarter</div>
+    <ul class="sidebar-nav" id="sidebar-nav">
+        @if (dashboardPermission.ViewRight == true)
+        {
+            <li class="nav-item mt-3"><a class="nav-link " href="@Url.Action("index","dashboard")"><i class="fa-solid fa-chart-pie"></i><span>@Resource.Dashboard</span></a></li>
+        }
+        @if (userStatusPermission.ViewRight == true || userAttachmentTypePermission.ViewRight == true)
+        {
+            <!-- Drop down example -->
+            <li class="nav-item">
+                <a class="nav-link collapsed @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "systemrole" ? "active" : "")" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                    <i class="fa-solid fa-gear"></i><span>@Resource.GeneralSettings</span><i class="fa-solid fa-caret-down ms-auto"></i>
+                </a>
+                <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    @if (userStatusPermission.ViewRight == true)
+                    {
+                        <li><a href="@Url.Action("index","userstatus")" class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "userstatus" ? "active" : "")"><i class="fa-solid fa-user-tag"></i> @Resource.UserStatus</a></li>
+                    }
+                    @if (userAttachmentTypePermission.ViewRight == true)
+                    {
+                        <li><a href="@Url.Action("index","userattachmenttype")" class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "globaloptionset" ? "active" : "")"><i class="fa-solid fa-file"></i> @Resource.UserAttachmentType</a></li>
+                    }
+                </ul>
+            </li>
+        }
+        @if (roleManagementPermission.ViewRight == true)
+        {
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="@Url.Action("index","role")">
+                    <i class="fa-solid fa-users"></i> <span>@Resource.RoleManagement</span>
+                </a>
+            </li>
+        }
+        @if (userManagementPermission.ViewRight == true)
+        {
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="@Url.Action("index","user")">
+                    <i class="fa-solid fa-user-plus"></i> <span>@Resource.UserManagement</span>
+                </a>
+            </li>
+        }
+        @if (loginHistoryPermission.ViewRight == true)
+        {
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="@Url.Action("index","loginhistory")">
+                    <i class="fa-solid fa-clock-rotate-left"></i> <span>@Resource.LoginHistory</span>
+                </a>
+            </li>
+        }
+    </ul>
+</aside>

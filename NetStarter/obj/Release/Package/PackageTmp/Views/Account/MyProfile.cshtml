@@ -1,0 +1,28 @@
+﻿@model NetStarter.Models.UserProfileViewModel
+@using NetStarter.Resources
+@{
+    ViewBag.Title = Resource.MyProfile;
+    Layout = "~/Views/Shared/_LayoutAfterLogin.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between pt-2">
+            <div class="pagetitle mb-sm-0 fw600">
+                @ViewBag.Title
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="section mt-3">
+
+    @Html.Partial("~/Views/User/_ProfileInfo.cshtml")
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <a class="btn btn-p8 hover-boxshadow me-1 addnewbtn hover-bg-primarycolor" href="@Url.Action("editmyprofile","account")">@Resource.EditMyProfile</a>
+        </div>
+    </div>
+
+</section>

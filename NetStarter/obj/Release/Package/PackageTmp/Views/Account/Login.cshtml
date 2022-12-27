@@ -1,0 +1,70 @@
+﻿@using NetStarter.Models
+@using NetStarter.Resources
+@using System.Configuration;
+@model NetStarter.Models.LoginViewModel
+@{
+    ViewBag.Title = Resource.Login;
+}
+
+@Html.Partial("~/Views/Shared/_Notification.cshtml")
+
+<div class="my-5"></div>
+
+<section class="py-10 px-3 px-sm-5">
+    <div class="container">
+        <div class="row justify-content-start align-items-start gx-0 gx-sm-5">
+            <div class="col-lg-6 pt-5 pt-lg-0 order-1 order-lg-0" align="center">
+                <img class="logo" src="~/Assets/logo/93x93.png" alt="ERC-OFAS">
+                <p class="mt-2">Republic of the Philippines</p>
+                <h3 class="header-text font-bold">ENERGY REGULATORY COMMISSION ONLINE FILING AND APPLICATION SYSTEM (ERC-OFAS)</h3>
+                <p>
+                    No need for long lines and long waiting times, with the OFAS, You can now file and monitor your
+                    non-EVOSS transactions with ERC online.
+                </p>
+                <p>
+                    Anytime, anywhere.
+                </p>
+                <p>
+                    Don't have an account?
+                    @Html.ActionLink(Resource.Register, "Register", null, new { @class = "fw500 color-secondarycolor hover-color-primarycolor" })
+                    
+                </p>
+            </div>
+            <div class="col-lg-6 order-0 order-lg-1">
+                <h1 class="fw600 pb-2 title-lg">Welcome Back!</h1>
+                <div class="pb-3">Login to continue</div>
+                @Html.ValidationSummary("", new { @class = "invalid-message" })
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken();
+                    <div class="mb-3 text-break">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "form-label required fw600" })
+                            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "invalid-message" })
+                        </div>
+                    </div>
+                    <div class="mb-3 text-break">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "form-label required fw600" })
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "invalid-message" })
+                        </div>
+                    </div>
+                    <div class="row gx-0 mb-4">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                @Html.CheckBoxFor(m => m.RememberMe, htmlAttributes: new { @class = "form-check-input", @type = "checkbox" })
+                                @Html.LabelFor(model => model.RememberMe, htmlAttributes: new { @class = "form-check-label small fw-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-start text-md-end">
+                            @Html.ActionLink(Resource.ForgotYourPassword, "ForgotPassword", null, new { @class = "small fw500 color-secondarycolor hover-color-primarycolor" })
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-p8 bg-secondarycolor color-white hover-color-white hover-boxshadow hover-moveup">Login</button>
+                }
+            </div>
+        </div>
+    </div>
+</section>

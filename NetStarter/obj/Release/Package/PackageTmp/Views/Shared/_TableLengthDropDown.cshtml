@@ -1,0 +1,22 @@
+﻿@using NetStarter.Resources
+@{
+    string dropdownId = "";
+    if (ViewData["DropDownId"] != null)
+    {
+        dropdownId = ViewData["DropDownId"].ToString();
+    }
+}
+<div class="select-wrapper filter-table" id="@dropdownId">
+    <div class="select">
+        <div class="select__trigger">
+            <span>@Resource.Show10Records</span>
+            <div class="arrow"><i class="fa-solid fa-caret-down"></i></div>
+        </div>
+        <div class="custom-options">
+            <span class="custom-option selected" data-value="10">@Resource.Show10Records</span>
+            <span class="custom-option" data-value="25">@Resource.Show25Records</span>
+            <span class="custom-option" data-value="50">@Resource.Show50Records</span>
+            <span class="custom-option" data-value="-1">@Resource.ShowAll</span>
+        </div>
+    </div>
+</div>

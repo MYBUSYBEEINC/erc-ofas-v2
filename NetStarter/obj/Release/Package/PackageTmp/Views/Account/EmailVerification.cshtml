@@ -1,0 +1,30 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Email Verification Link</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification Link</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="vh-100 d-flex justify-content-center align-items-center">
+        <div>
+            <div class="mb-4 text-center">
+                <img src="~/Assets/3214206.png" width="100" />
+            </div>
+            <div class="text-center">
+                <h1>Thank You!</h1>
+                <p>Thanks for signing up! Please verify your email address to complete setting up your account.</p>
+                <button class="btn btn-primary" onclick="location.href='@Url.Action("Login", "Account")'">Back to Homepage</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

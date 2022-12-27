@@ -1,0 +1,158 @@
+﻿@using NetStarter.Models;
+@using NetStarter.Resources
+@{
+    ViewBag.Title = "Request Hearing";
+    Layout = "~/Views/Shared/_LayoutAfterLogin.cshtml";
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Hearing/Request</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Dashboard")">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                Hearings
+            </li>
+            <li class="active breadcrumb-item">
+                <strong>Request</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2"></div>
+</div>
+<div id="hearing-content" class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <br />
+                    <h1 style="color: blue; text-align: center;">
+                        Schedule of Hearings
+                    </h1>
+                    <br />
+                </div>
+                <div class="ibox-content">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="alert alert-success alert-dismissable">
+                                    <strong>Success!</strong> Your have been successfully sent request a virtual hearing.
+                                </div>
+                                <div class="alert alert-danger alert-dismissable">
+                                    <strong>Error!</strong> <span class="danger-text"></span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Type of Hearing <span class="text-danger font-bold">*</span></label>
+                                            <select class="form-control m-b hearing-type-select select" name="hearing-type">
+                                                <option value=""></option>
+                                                <option value="1">Initial hearing</option>
+                                                <option value="2">Written order</option>
+                                                <option value="3">Open court</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label>Description </label>
+                                            <textarea rows="2" cols="50" class="form-control description-text"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <br />
+                        <div class="form-group row">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-success btn-md send-request" type="submit">
+                                    <i class="fa fa-send-o"></i> Send Request
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    
+    <script>
+
+        var Hearing = function () {
+            var form = this;
+            var baseUrl = 'http://localhost:55653/api';
+
+            form._constructor = function () {
+                var url = window.location.href;
+
+                form._events();
+
+                $('#hearing-content .alert-success').hide();
+                $('#hearing-content .alert-danger').hide();
+            },
+                form._events = function () {
+                    var url = window.location.href;
+
+                    $('#hearing-content .send-request').click(function (e) {
+
+                        form.sendrequest();
+                    });
+                },
+                form.validateForm = function () {
+                    if ($('#hearing-content .hearing-type-select :selected').val().length === 0)
+                        return false;
+
+                    return true;
+                },
+                form.sendrequest = function () {
+                    console.log("sendrequest");
+                    if (form.validateForm()) {
+
+                        $.ajax({
+                            type: 'POST',
+                            url: `/Hearing/PostRequestHearing`,
+                            data: JSON.stringify({
+                                hearingType: parseInt($("#hearing-content .hearing-type-select :selected").val()),
+                                description: $("#hearing-content .description-text").val()
+                            }),
+                            contentType: 'application/json; charset=utf-8',
+                            success: function (data) {
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                $('#hearing-content .success-text').text('Your have been successfully sent a request for virtual hearing.');
+                                $('#hearing-content .alert-success').show();
+                                $('#hearing-content .alert-danger').hide();
+
+                                // Redirect to list page.
+                                location.href = "/Hearing/HearingList";
+                            },
+                            error: function (err) {
+                                console.log('There was a problem sending a virtual hearing request. Please try again later.');
+                            },
+                            async: true
+                        });
+                    } else {
+                        $('#hearing-content .danger-text').text('Please select a hearing type to proceed.');
+                        $('#hearing-content .alert-danger').show();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                }
+
+        }
+
+        var hearing = new Hearing();
+        hearing._constructor();
+
+
+
+    </script>
+}
+

@@ -1,0 +1,111 @@
+﻿@model NetStarter.Models.SystemRoleListing
+@using NetStarter.Resources
+<thead class="table-light">
+    <tr>
+        <th class="thead">@Html.DisplayNameFor(model => model.Listing[0].Name)</th>
+        <th class="thead">@Resource.Actions <i class="fa-solid fa-circle-info text-info ps-2" data-bs-toggle="tooltip" data-bs-placement="right" title="@Resource.NormalUserSystemAdminCannotBeDeleted"></i></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model.Listing)
+    {
+        <tr>
+            <td><a class="fw600 color-primarycolor hover-color-secondarycolor" href="@Url.Action("viewrecord", new { Id = @Html.ValueFor(modelItem => item.Id) })">@Html.DisplayFor(modelItem => item.Name)</a></td>
+            <td>
+                <div class="d-flex text-breakspaces actioncol">
+                    @if (item.SystemDefault == false)
+                    {
+                        <span class="fs-19 canedit"><a href="@Url.Action("edit", new { Id = @Html.ValueFor(modelItem => item.Id) })"><i class="fa-solid fa-edit text-edit hover-color-secondarycolor" data-bs-toggle="tooltip" data-bs-placement="top" title="@Resource.Edit"></i></a> &nbsp;</span>
+                        <span class="fs-19 candelete" onclick="triggerDeleteConfirmationModal('@item.Name','@Url.Action("delete", new { id = item.Id })')"><i class="fa-solid fa-trash-can text-delete hover-color-secondarycolor cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="@Resource.Delete"></i></span>
+                    }
+                </div>
+            </td>
+        </tr>
+    }
+</tbody>
+
+
+<script>
+    var fileName = "@Resource.ListofRoles";
+    var indexLastColumn = $('#' + tableIdPrefix + '-table').find('tr')[0].cells.length - 1;
+    //initialize datatable
+    var table = $('#' + tableIdPrefix + '-table').DataTable({
+        dom: 'Brtip',
+        "pageLength": 10,
+        //order: [[2, 'desc']],
+        scrollY: 'auto',
+        scrollX: 'auto',
+        deferRender: true,
+        scroller: true,
+        buttons: [
+            {
+                extend: 'csv',
+                title: fileName,
+                exportOptions: { columns: getColumnsToBeExported(tableIdPrefix) }
+            }, {
+                extend: 'excel',
+                title: fileName,
+                exportOptions: { columns: getColumnsToBeExported(tableIdPrefix) }
+            }, {
+                extend: 'pdf',
+                title: fileName,
+                exportOptions: { columns: getColumnsToBeExported(tableIdPrefix) },
+                customize: function (doc) {
+                    var colCount = adjustPdfColWidth(tableIdPrefix);
+                    doc.content[1].table.widths = colCount;
+                }
+            }
+        ],
+        "columnDefs": [{
+            'targets': [indexLastColumn], // column index (start from 0)
+            'orderable': false, // set orderable false for selected columns
+        }]
+    });
+
+    if (canEdit == 'False') {
+        $('#' + tableIdPrefix + '-table .canedit').hide();
+    }
+    if (canDelete == 'False') {
+        $('#' + tableIdPrefix + '-table .candelete').hide();
+    }
+
+    $("#exportToExcel").click(function () {
+        $(".buttons-excel").trigger("click");
+    });
+    $("#exportToPdf").click(function () {
+        $(".buttons-pdf").trigger("click");
+    });
+
+    //initialize tooltip
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+
+    //event listener for search, reset, and "show 10 records" buttons
+    document.getElementById("searchbtn").addEventListener("click", searchTable);
+    document.getElementById("resetbtn").addEventListener("click", resetTable);
+
+    function searchTable() {
+        var valToSearch = document.getElementById("search").value;
+        table.search(valToSearch).draw();
+    }
+
+    function resetTable() {
+        document.getElementById("search").value = "";
+        table.search("").draw();
+    }
+
+    //event listener for the "show 10 records" drop down list
+    for (const option of document.querySelectorAll("#" + tableIdPrefix + "-tableDropDown .custom-option")) {
+        option.addEventListener('click', function () {
+            if (!this.classList.contains('selected')) {
+                this.parentNode.querySelector('.custom-option.selected').classList.remove('selected');
+                this.classList.add('selected');
+                this.closest('.select').querySelector('.select__trigger span').textContent = this.textContent;
+                let chosenValue = this.getAttribute("data-value");
+                table.page.len(chosenValue).draw();
+            }
+        })
+    }
+</script>

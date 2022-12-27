@@ -1,0 +1,180 @@
+﻿
+@{
+    ViewBag.Title = "Notify";
+    Layout = "~/Views/Shared/_LayoutAfterLogin.cshtml";
+}
+<link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Hearing/Notify</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Dashboard")">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                Hearings
+            </li>
+            <li class="active breadcrumb-item">
+                <strong>Notify</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2"></div>
+</div>
+<div id="hearing-content" class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <br />
+                    <h1 style="color: blue; text-align: center;">
+                        Notify Stakeholder and Concern Services
+                    </h1>
+                    <br />
+                </div>
+                <div class="ibox-content">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="alert alert-success alert-dismissable">
+                                    <strong>Success!</strong> Your have been successfully notified stakeholder/services.
+                                </div>
+                                <div class="alert alert-danger alert-dismissable">
+                                    <strong>Info!</strong> <span class="danger-text"></span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <input type="hidden" class="hearing-id" />
+                                        <div class="form-group">
+                                            <label>Stakeholder <span class="text-danger font-bold"></span></label>
+                                            <select class="form-control m-b stakeholder-select" name="stakeholder">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Concerned Services <span class="text-danger font-bold"></span></label>
+                                            <select class="form-control m-b services-select" name="services">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <br />
+                        <div class="form-group row">
+                            <div class="col-sm-12" style="text-align: center;">
+                                <button class="btn btn-primary btn-md notify-stakeholder" type="submit">
+                                    <i class="fa fa-envelope"></i> Notify
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script>
+
+        var HearingSchedule = function () {
+
+            var form = this;
+            var baseUrl = 'http://localhost:55653/api';
+            var isUserLs = false;
+
+            form._constructor = function () {
+                var url = window.location.href;
+
+                $('#hearing-content .alert-success').hide();
+                $('#hearing-content .alert-danger').hide();           
+
+                form._events();
+                form.getUsers();
+            },
+            form._events = function () {
+                var url = window.location.href;                                  
+
+                var id = url.substring(url.lastIndexOf('/') + 1);
+
+                $('#hearing-content .notify-stakeholder').click(function (e) {
+
+                    form.notify(id);
+                });                
+            },            
+            form.validateForm = function () {
+
+                if ($('#hearing-content .stakeholder-select :selected').val() === undefined && $('#hearing-content .services-select :selected').val() === undefined
+                    || $('#hearing-content .stakeholder-select :selected').val() === '' && $('#hearing-content .services-select :selected').val() === '')
+                    return false;
+                //else if ($('#hearing-content .services-select :selected').val() === '')
+                //    return false;
+                
+                return true;
+            },
+            form.getUsers = function () {
+
+                $.ajax({
+                    url: '/User/GetUsers',
+                    type: 'GET',
+                    success: function (result) {
+
+                        $('#hearing-content .stakeholder-select').prepend($("<option disabled></option>"));
+                        $('#hearing-content .services-select').prepend($("<option disabled></option>"));
+                        $.each(result, function (id, option) {
+                            $('#hearing-content .stakeholder-select').append($('<option></option>').val(option.AspNetUserId).html(option.FullName));
+                            $('#hearing-content .services-select').append($('<option></option>').val(option.AspNetUserId).html(option.FullName));
+                        });
+
+                        $('#hearing-content .stakeholder-select').val('');
+                        $('#hearing-content .services-select').val('');
+                    }
+                });
+            },
+            form.notify = function (id) {
+
+                if (form.validateForm()) {
+                    $.ajax({
+                        type: 'POST',
+                        url: `/Hearing/Notify`,
+                        data: JSON.stringify({
+                            id: id,
+                            stakeHolderId: $("#hearing-content .stakeholder-select :selected").val(),
+                            serviceId: $("#hearing-content .services-select :selected").val()
+                        }),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            $('#hearing-content .success-text').text('Your have been successfully notify stakeholder/services.');
+                            $('#hearing-content .alert-success').show();
+                            $('#hearing-content .alert-danger').hide();
+
+                            // Redirect to list page.
+                            location.href = "/Hearing/HearingList";
+                        },
+                        error: function (err) {
+                            console.log('There was a problem sending a notification to stakeholder/services. Please try again later.');
+                        },
+                        async: true
+                    });
+
+                } else {
+                    $('#hearing-content .danger-text').text('Please select a stakeholder or services to notify.');
+                    $('#hearing-content .alert-danger').show();
+                }
+            }
+        }
+
+        var hearingSchedule = new HearingSchedule();
+        hearingSchedule._constructor();
+
+
+    </script>
+
+}

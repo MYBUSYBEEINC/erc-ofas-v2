@@ -1,0 +1,300 @@
+﻿
+@{
+    ViewBag.Title = "Upload Hearing Document";
+    Layout = "~/Views/Shared/_LayoutAfterLogin.cshtml";
+}
+<div id="pleading-header" class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 class="name">Hearing Upload Document</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Dashboard")">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                Hearing
+            </li>
+            <li class="active breadcrumb-item">
+                <strong class="breadcrumb-text">Upload Hearing Document</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2"></div>
+</div>
+<div id="hearing-content" class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <br />
+                    <h1 style="color: blue; text-align: center;">
+                        Schedule of Hearings
+                    </h1>
+                    <br />
+                </div>
+                <div class="ibox-content">
+                    <div class="panel-body">
+                        <div class="row">                            
+                            <div class="col-lg-12">
+                                <div class="alert alert-danger alert-upload-document">
+                                    <strong>Info!</strong> <span class="upload-document-text"></span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <input type="hidden" class="hearing-id" />
+                                        <div class="form-group">
+                                            <label>Promulgation of IO/NVH<span class="text-danger font-bold"></span></label>
+                                            <input type="file" class="form-control file document-promulgation" name="promulgation IO/NVH" accept=".pdf, .doc, .docx, .png, .jpg, .jpeg" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 col-sm-offset-2">
+                                        <button class="btn btn-success btn-sm upload-document-promulgation" style="background-color: #28a745; border-color: #28a745; color: #fff;" type="submit">
+                                            <i class="fa fa-upload"></i> Upload
+                                        </button>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <input type="hidden" class="hearing-id" />
+                                        <div class="form-group">
+                                            <label>Hearing Documents<span class="text-danger font-bold"></span></label>
+                                            <input type="file" class="form-control file document-hearing" name="Hearing" accept=".pdf, .doc, .docx, .png, .jpg, .jpeg" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 col-sm-offset-2">
+                                        <button class="btn btn-success btn-sm upload-documents-hearing" style="background-color: #28a745; border-color: #28a745; color: #fff;" type="submit">
+                                            <i class="fa fa-upload"></i> Upload
+                                        </button>
+                                    </div>
+                                </div>
+                                <br />
+                            </div>                            
+                        </div>
+                        <div class="row" style="color: blue;">
+                            <h6>Select Key Personnel</h6>
+                        </div>
+                        <div class="hr-line-solid"></div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Personnel <span class="text-danger font-bold">*</span></label>
+                                    <select class="form-control m-b personnel-select" name="personnel">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label style="color: #fff;">Personnel</label>
+                                    <div class="col-sm-4 col-sm-offset-2 center">
+                                        <button class="btn btn-info btn-md assign-personnel" type="submit">
+                                            <i class="fa fa-user-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-sm-4 col-sm-offset-2 center">
+                                <button class="btn btn-info btn-md next-action" onclick="location.href=HearingList" type="submit">
+                                    <i class="fa fa-arrow-right"></i> Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    
+    <script>
+
+        var HearingSchedule = function () {
+
+            var form = this;
+            var baseUrl = 'http://localhost:55653/api';
+            var isUserLs = false;
+
+            form._constructor = function () {
+                var url = window.location.href;
+
+                $('#hearing-content .alert-success').hide();
+                $('#hearing-content .alert-danger').hide();
+                $('#hearing-content .row-schedule').hide();
+
+                form._events();
+                form.getUsers();
+            },
+            form._events = function () {
+                var url = window.location.href;
+                var id = url.substring(url.lastIndexOf('/') + 1);   
+
+                $('#hearing-content .upload-document-promulgation').click(function (e) {
+
+                    var inputFile = $("#hearing-content .document-promulgation").get(0);
+                    var files = inputFile.files;
+                    
+                    if (files.length == 0) {
+                        $('#hearing-content .upload-document-text').html(`Please upload a <strong>${$('#hearing-content .document-promulgation').attr('name')}</strong> document file.`);
+                        $('#hearing-content .alert-upload-document').show();
+                        return;
+                    }
+
+                    form.uploadDocument(id, 1, files);
+                });
+
+                $('#hearing-content .upload-documents-hearing').click(function (e) {
+
+                    var inputFile = $("#hearing-content .document-hearing").get(0);
+                    var files = inputFile.files;
+                    
+                    if (files.length == 0) {
+                        $('#hearing-content .upload-document-text').html(`Please upload a <strong>${$('#hearing-content .document-hearing').attr('name')}</strong> document file.`);
+                        $('#hearing-content .alert-upload-document').show();
+                        return;
+                    }
+
+                    form.uploadDocument(id, 2, files);
+                });
+
+                $('#hearing-content .assign-personnel').click(function (e) {
+                    console.log("assign: " + $("#hearing-content .personnel-select :selected").val());
+                    var personnel = $("#hearing-content .personnel-select :selected").val();
+                    if (personnel === "" || personnel === undefined) {
+                        $('#hearing-content .upload-document-text').html(`Please select a personnel.`);
+                        $('#hearing-content .alert-upload-document').show();
+                        return;
+                    }
+
+                    // Assign personnel
+                    form.assignPersonnel(id);
+                });
+
+                //onclick="location.href='ScheduleSet/${data.items[i].Id}'"
+
+                $('#hearing-content .next-action').click(function (e) {
+                    
+                    // Redirect to list page.
+                    location.href = "/Hearing/HearingList";
+                });
+            },
+                
+            form.saveDocument = function (id, documentType, fileName, files) {
+
+                $.ajax({
+                    type: 'POST',
+                    url: `${baseUrl}/hearingdocuments`,
+                    data: JSON.stringify({
+                        fileName: fileName,
+                        hearingId: id,
+                        documentType: documentType
+                    }),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                        // If request saved, upload actual file.
+                        form.uploadDocument(files);
+                    },
+                    error: function (err) {
+                        console.log('There was a problem uploading file document. Please try again later.');
+                    },
+                    async: true
+                });
+            },
+            form.uploadDocument = function (id, documentType, formFile) {
+                console.log("Uploading files.");
+                var inputFile = $("#hearing-content .document-promulgation").get(0);
+                var files = inputFile.files;
+                console.log(files[0]);
+                var formData = new FormData();
+                formData.append("formFile", files[0]);
+                formData.append("hearingId", id);
+                formData.append("documentType", documentType);
+                
+                $.ajax({
+                    url: '/Hearing/UploadDocument',
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    success: function (data) {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                        // Uploaded document successfully.
+                        if (data) {
+                            $('#hearing-content .upload-document-text').html('Your have been successfully uploaded a document.');
+                            $('#hearing-content .alert-upload-document').show();
+                        } else {
+                            $('#hearing-content .upload-document-text').html('Error in uploading a document!');
+                            $('#hearing-content .alert-upload-document').show();
+                        }
+                    },
+                    error: function (err) {
+                        console.log("upload file error");
+                    },
+                    async: true
+                });
+            },
+            form.getUsers = function() {
+
+                $.ajax({
+                    url: '/User/GetUsers',
+                    type: 'GET',
+                    success: function (result) {
+                        
+                        $('#hearing-content .personnel-select').prepend($("<option disabled></option>"));
+                        $.each(result, function (id, option) {                            
+                            $('#hearing-content .personnel-select').append($('<option></option>').val(option.AspNetUserId).html(option.FullName));
+                        });
+
+                        $('#hearing-content .personnel-select').val('');
+                    }
+                });
+            },
+            form.assignPersonnel = function (id) {
+                console.log($("#hearing-content .personnel-select :selected").val());
+                $.ajax({
+                    type: 'POST',
+                    url: `/Hearing/AssignPersonnel`,
+                    data: JSON.stringify({                        
+                        hearingId: id,
+                        userId: $("#hearing-content .personnel-select :selected").val()
+                    }),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                        if (data) {
+                            $('#hearing-content .upload-document-text').html('Your have been successfully assigned a personned.');
+                            $('#hearing-content .alert-upload-document').show();
+                        } else {
+                            $('#hearing-content .upload-document-text').html('Error in assigning a personnel!');
+                            $('#hearing-content .alert-upload-document').show();
+                        }
+                    },
+                    error: function (err) {
+                        console.log('There was a problem assigning hearing personnel. Please try again later.');
+                    },
+                    async: true
+                });
+            }
+        }     
+
+        var hearingSchedule = new HearingSchedule();
+        hearingSchedule._constructor();
+
+    </script>
+
+}

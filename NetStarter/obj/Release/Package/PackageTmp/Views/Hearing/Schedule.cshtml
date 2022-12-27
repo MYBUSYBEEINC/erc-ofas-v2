@@ -1,0 +1,337 @@
+﻿@using NetStarter.Models;
+@using NetStarter.Resources
+@{
+    ViewBag.Title = "Schedule";
+    Layout = "~/Views/Shared/_LayoutAfterLogin.cshtml";
+}
+<link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Hearing/Schedule</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Dashboard")">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                Hearings
+            </li>
+            <li class="active breadcrumb-item">
+                <strong>Schedule</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2"></div>
+</div>
+<div id="hearing-content" class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <br />
+                    <h1 style="color: blue; text-align: center;">
+                        Hearing Schedule
+                    </h1>
+                    <br />
+                </div>
+                <div class="ibox-content">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="alert alert-success alert-dismissable">
+                                    <strong>Success!</strong> Your have been successfully scheduled a virtual hearing.
+                                </div>
+                                <div class="alert alert-danger alert-dismissable">
+                                    <strong>Error!</strong> <span class="danger-text"></span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <input type="hidden" class="hearing-id" />
+                                        <div class="form-group">
+                                            <label>Date of Hearing <span class="text-danger font-bold">*</span></label>
+                                            <div class="input-group date" data-provide="datepicker">
+                                                <input type="text" class="form-control schedule-date" value="">
+                                                <div class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-th"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Type of Hearing <span class="text-danger font-bold">*</span></label>
+                                            <select class="form-control m-b hearing-type-select" name="hearing-type" disabled>
+                                                <option value=""></option>
+                                                <option value="1">Initial hearing</option>
+                                                <option value="2">Written order</option>
+                                                <option value="3">Open court</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row-schedule">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label>Meeting Link <span class="text-danger font-bold">*</span></label>
+                                            <input type="text" class="form-control meeting-link-text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row-schedule">
+                                    <div class="col-lg-12">
+                                        <div class="form-group hide">
+                                            <label>Description </label>
+                                            <textarea rows="2" cols="50" class="form-control description-text"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <br />
+                        <div class="form-group row">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-success btn-md schedule-hearing" type="submit">
+                                    <i class="fa fa-send-o"></i> Schedule
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <environment names="Development">
+        <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    </environment>
+
+    <script>
+        var HearingSchedule = function () {
+
+            var form = this;
+            var baseUrl = 'http://localhost:55653/api';
+            var isUserLs = false;
+
+            form._constructor = function () {
+                var url = window.location.href;
+
+                $('#hearing-content .alert-success').hide();
+                $('#hearing-content .alert-danger').hide();
+                $('#hearing-content .row-schedule').hide();
+
+                form._events();
+            },
+                form._events = function () {
+                    var url = window.location.href;
+
+                $('#hearing-content .schedule-date').val('');
+                //console.log($('#hearing-content .schedule-date').val());
+                //$('#hearing-content .schedule-date').datepicker({
+                //        format: 'mm/dd/yyyy'
+                //        //startDate: '-3d'
+                //        //autoclose: true
+                //    });
+
+                    var id = url.substring(url.lastIndexOf('/') + 1);
+                    console.log(url.substring(url.lastIndexOf('/')));
+                    if (url.indexOf("ScheduleSet") !== -1) {
+                        isUserLs = true;
+                        //$('#hearing-content .row-schedule').show();
+                    }
+
+                    form.getHearingSchedule(id);
+
+                    $('#hearing-content .schedule-hearing').click(function (e) {
+
+                        form.schedule();
+                    });
+
+                    $('#hearing-content .cancel-hearing').click(function (e) {
+
+                        form.cancelHearingSchedule();
+                    });
+
+                    $('#hearing-content .upload-document-promulgation').click(function (e) {
+
+                        var inputFile = $("#hearing-content .document-promulgation").get(0);
+                        var files = inputFile.files;
+                        console.log(files);
+                        if (files.length == 0) {
+                            $('#hearing-content .upload-document-text').html(`Please upload a <strong>${$('#hearing-content .document-promulgation').attr('name')}</strong> document file.`);
+                            $('#hearing-content .alert-upload-document').show();
+                            return;
+                        }
+
+                        form.saveDocument(id, 1, files[0].name, files);
+                    });
+
+                    $('#hearing-content .upload-documents-hearing').click(function (e) {
+
+                        var inputFile = $("#hearing-content .document-hearing").get(0);
+                        var files = inputFile.files;
+                        console.log(files);
+                        if (files.length == 0) {
+                            $('#hearing-content .upload-document-text').html(`Please upload a <strong>${$('#hearing-content .document-hearing').attr('name')}</strong> document file.`);
+                            $('#hearing-content .alert-upload-document').show();
+                            return;
+                        }
+
+                        form.saveDocument(id, 2, files[0].name, files);
+                    });
+                },
+                form.getHearingSchedule = function (id) {
+                $.get('/Hearing/GetHearingScheduleById?id=' + id)
+                        .done(function (data) {
+
+                            var hearingScheduleDate = '';
+                            if (data.Schedule !== null)
+                                hearingScheduleDate = new Date(new Date(parseInt(data.Schedule.substr(6)))).toLocaleDateString();
+
+                            $('#hearing-content .hearing-id').val(id);
+                            $('#hearing-content .schedule-date').val(hearingScheduleDate);
+                            $('#hearing-content .hearing-type-select').val(data.HearingType);
+                            $("#hearing-content .meeting-link-text").val(data.MeetingLink);
+                            $('#hearing-content .description-text').val(data.Description);
+                        }).fail(function (error) {
+                            console.log('There was a problem fetching the hearing schedule. Please try again later.');
+                        });
+                },
+                form.validateForm = function () {
+                    if (!isUserLs) {
+                        if ($('#hearing-content .schedule-date').val() === '')
+                            return false;
+                    }
+                    //else {
+                    //    if ($('#hearing-content .meeting-link-text').val() === '')
+                    //        return false;
+                    //}
+
+                    return true;
+                },
+                form.schedule = function () {
+
+                    if (form.validateForm()) {
+                        form.processHearingSchedule();
+
+                    } else {
+                        $('#hearing-content .danger-text').text('Please set a date of virtual hearing');
+                        $('#hearing-content .alert-danger').show();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                },
+                form.processHearingSchedule = function () {
+
+                    $.ajax({
+                        type: 'POST',
+                        url: `/Hearing/UpdateHearing`,
+                        data: JSON.stringify({
+                            id: $('#hearing-content .hearing-id').val(),
+                            hearingType: parseInt($("#hearing-content .hearing-type-select :selected").val()),
+                            schedule: $("#hearing-content .schedule-date").val(),
+                            meetingLink: $("#hearing-content .meeting-link-text").val(),
+                            description: $("#hearing-content .description-text").val(),
+                            hearingStatus: 1 // Approved
+                        }),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            $('#hearing-content .success-text').text('Your have been successfully set a schedule for virtual hearing.');
+                            $('#hearing-content .alert-success').show();
+                            $('#hearing-content .alert-danger').hide();
+                            
+                            // Redirect to list page.
+                            location.href = "/Hearing/HearingList";
+                        },
+                        error: function (err) {
+                            console.log('There was a problem scheduling a virtual hearing request. Please try again later.');
+                        },
+                        async: true
+                    });
+                }
+            form.cancelHearingSchedule = function () {
+                console.log("Cancel hearing schedule.");
+                $.ajax({
+                    type: 'PUT',
+                    url: `${baseUrl}/hearing`,
+                    data: JSON.stringify({
+                        id: $('#hearing-content .hearing-id').val(),
+                        hearingType: parseInt($("#hearing-content .hearing-type-select :selected").val()),
+                        schedule: $("#hearing-content .schedule-date").val(),
+                        meetingLink: $("#hearing-content .meeting-link-text").val(),
+                        description: $("#hearing-content .description-text").val(),
+                        hearingStatus: 2 // Cancelled
+                    }),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('#hearing-content .success-text').text('Your have been successfully cancelled a schedule for virtual hearing.');
+                        $('#hearing-content .alert-success').show();
+                        $('#hearing-content .alert-danger').hide();
+
+                        // Redirect to list page.
+                        location.href = "/Hearing/HearingList";
+                    },
+                    error: function (err) {
+                        console.log('There was a problem cancelling schedule of virtual hearing. Please try again later.');
+                    },
+                    async: true
+                });
+            },
+                form.saveDocument = function (id, documentType, fileName, files) {
+
+                    $.ajax({
+                        type: 'POST',
+                        url: `${baseUrl}/hearingdocuments`,
+                        data: JSON.stringify({
+                            fileName: fileName,
+                            hearingId: id,
+                            documentType: documentType
+                        }),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                            // If request saved, upload actual file.
+                            form.uploadDocument(files);
+                        },
+                        error: function (err) {
+                            console.log('There was a problem uploading file document. Please try again later.');
+                        },
+                        async: true
+                    });
+                },
+                form.uploadDocument = function (formFile) {
+                    console.log("Uploading files.");
+                    console.log(formFile);
+                    var formData = new FormData();
+                    formData.append("formFile", formFile[0]);
+
+                    $.ajax({
+                        url: `/Hearing/UploadDocument`,
+                        type: "POST",
+                        contentType: false,
+                        processData: false,
+                        data: formData,
+                        success: function (data) {
+                            // Uploaded document successfully.
+                            $('#hearing-content .upload-document-text').html('Your have been successfully uploaded a document.');
+                            $('#hearing-content .alert-upload-document').show();
+                        },
+                        error: function (err) {
+                            console.log("upload file error");
+                        }
+                    });
+                }
+        }
+
+        var hearingSchedule = new HearingSchedule();
+        hearingSchedule._constructor();
+
+    </script>
+}
+

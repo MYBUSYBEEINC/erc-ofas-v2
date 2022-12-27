@@ -1,0 +1,97 @@
+﻿@model NetStarter.Models.PreRegistrationViewModel
+@using NetStarter.CustomHelper
+@using NetStarter.Resources
+@{
+    ViewBag.Title = "RC Request for Email Registration (RER)";
+}
+
+@Html.Partial("~/Views/Shared/_Notification.cshtml")
+
+<div class="my-5"></div>
+<h2 class="fw600 pb-2 text-capitalizetitle-lg text-center">ERC Request for Email Registration (RER)</h2>
+<section class="py-5 px-3 px-sm-5">
+    <div class="container">
+        @using (Html.BeginForm("register", "account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken();
+            <div class="row justify-content-start align-items-start gx-0 gx-sm-5">
+                <div class="col-lg-6 pt-5 pt-lg-0 order-1 order-lg-0">
+                    <h5>Step 1 - Type of RER</h5>
+                    <div class="row">
+                        <div class="mb-3 text-break">
+                            @CustomHelper.CustomDropDownList("RERTypeId", Model.RERTypeList)
+                            @Html.ValidationMessageFor(model => model.RERTypeId, "", new { @class = "invalid-message" })
+                        </div>
+                    </div>
+                    <h5>Step 2 - Individual Person Form</h5>
+                    <p>
+                        The RER must be accompanied by a Certification or Authorization containing the following:<br />
+                        <i>(1) Email Address;</i><br />
+                        <i>(2) Mobile number/s that the ERC’s personnel can contact during working hours;</i><br />
+                        <i>(3) Copies of the company-issued identification cards (IDs) and/or government-issued IDs</i>
+                    </p>
+                    <div class="row">
+                        <div class="mb-3 text-break">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "form-label required fw600" })
+                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "invalid-message" })
+                            </div>
+                        </div>
+                        <div class="mb-3 text-break">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "form-label required fw600" })
+                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "invalid-message" })
+                            </div>
+                        </div>
+                        <div class="mb-3 text-break">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.EmailAddress, htmlAttributes: new { @class = "form-label required fw600" })
+                                @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "invalid-message" })
+                            </div>
+                        </div>
+                        <div class="mb-3 text-break">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MobileNumber, htmlAttributes: new { @class = "form-label required fw600" })
+                                @Html.EditorFor(model => model.MobileNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.MobileNumber, "", new { @class = "invalid-message" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 pt-5 pt-lg-0 order-1 order-lg-0">
+                    <h5>Step 3 - Upload Files</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Document Name</th>
+                                    <th>Upload File</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-data">
+                                <tr>
+                                    <td class="name">Barangay Clearance</td>
+                                    <td><input type="file" id="file" name="file"></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Certification of your Company</td>
+                                    <td><input type="file" id="file" name="file"></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Goverment Issued IDs</td>
+                                    <td><input type="file" id="file" name="file"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="submit" class="btn btn-p8 bg-secondarycolor color-white hover-color-white hover-boxshadow hover-moveup">Register</button>
+                </div>
+                <div class="col-lg-6 order-0 order-lg-1">
+                </div>
+            </div>
+        }
+    </div>
+</section>
